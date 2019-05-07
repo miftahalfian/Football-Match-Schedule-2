@@ -1,3 +1,3 @@
 # FootballMatchSchedule
 
-Ini adalah aplikasi jadwal pertandingan sepakbola untuk Submission II KADE Dicoding
+Ini adalah aplikasi jadwal pertandingan sepakbola untuk Submission III KADE Dicoding
