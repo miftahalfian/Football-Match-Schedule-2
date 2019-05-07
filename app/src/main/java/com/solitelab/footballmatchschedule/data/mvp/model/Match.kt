@@ -83,4 +83,6 @@ data class Match (
 
     @SerializedName("strAwayYellowCards")
     val awayYellowCards: String? = null
-) : Parcelable
+) : Parcelable {
+
+}

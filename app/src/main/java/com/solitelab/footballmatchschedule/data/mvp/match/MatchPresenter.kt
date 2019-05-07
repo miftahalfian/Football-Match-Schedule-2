@@ -1,9 +1,13 @@
 package com.solitelab.footballmatchschedule.data.mvp.match
 
+import android.util.Log
+import android.widget.ImageView
 import com.google.gson.Gson
 import com.solitelab.footballmatchschedule.data.api.ApiRepository
 import com.solitelab.footballmatchschedule.data.api.TheSportDBApi
 import com.solitelab.footballmatchschedule.data.mvp.model.LeagueResult
+import com.solitelab.footballmatchschedule.data.mvp.model.TeamResult
+import com.squareup.picasso.Picasso
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 

@@ -13,9 +13,13 @@ import com.solitelab.footballmatchschedule.data.api.ApiRepository
 import com.solitelab.footballmatchschedule.data.api.TheSportDBApi
 import com.solitelab.footballmatchschedule.data.mvp.model.Match
 import com.solitelab.footballmatchschedule.data.mvp.model.TeamResult
+import com.solitelab.footballmatchschedule.ui.layout.LeagueItemUI
+import com.solitelab.footballmatchschedule.ui.layout.MatchItemUI
 import com.solitelab.footballmatchschedule.utils.formatTo
+import com.solitelab.footballmatchschedule.utils.loadTeamBadge
 import com.solitelab.footballmatchschedule.utils.toDate
 import com.squareup.picasso.Picasso
+import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.uiThread
@@ -26,18 +30,15 @@ class MatchAdapter(private val listener: (match:Match, homeLogo:ImageView, awayL
     private var items: ArrayList<Match> = ArrayList()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val tvLeagueName : TextView = itemView.find(R.id.tv_league_name)
-        private val tvDate : TextView = itemView.find(R.id.tv_date)
-        private val tvTime : TextView = itemView.find(R.id.tv_time)
-        private val homeLogo : ImageView = itemView.find(R.id.img_home_logo)
-        private val awayLogo : ImageView = itemView.find(R.id.img_away_logo)
-        private val homeScore : TextView = itemView.find(R.id.tv_home_score)
-        private val awayScore : TextView = itemView.find(R.id.tv_away_score)
-        private val tvHomeName : TextView = itemView.find(R.id.tv_home_team_name)
-        private val tvAwayName : TextView = itemView.find(R.id.tv_away_team_name)
-
-        private val request = ApiRepository()
-        private val gson = Gson()
+        private val tvLeagueName : TextView = itemView.find(R.id.league_name)
+        private val tvDate : TextView = itemView.find(R.id.match_date)
+        private val tvTime : TextView = itemView.find(R.id.match_time)
+        private val homeLogo : ImageView = itemView.find(R.id.home_logo)
+        private val awayLogo : ImageView = itemView.find(R.id.away_logo)
+        private val homeScore : TextView = itemView.find(R.id.home_score)
+        private val awayScore : TextView = itemView.find(R.id.away_score)
+        private val tvHomeName : TextView = itemView.find(R.id.home_team_name)
+        private val tvAwayName : TextView = itemView.find(R.id.away_team_name)
 
         private var homeImageSrc : String = ""
         private var awayImageSrc : String = ""
@@ -62,23 +63,6 @@ class MatchAdapter(private val listener: (match:Match, homeLogo:ImageView, awayL
                 listener(match, homeLogo, awayLogo, homeImageSrc, awayImageSrc)
             }
         }
-
-        fun loadTeamBadge(id : String?, img : ImageView, listener: (String?) -> Unit) {
-            doAsync {
-                val data = gson.fromJson(request
-                    .doRequest(TheSportDBApi.getTeamDetail(id)),
-                    TeamResult::class.java
-                )
-
-                uiThread {
-                    if (data.teams[0].badge != null) {
-                        Log.d("match adapter", data.teams[0].badge)
-                        Picasso.get().load(data.teams[0].badge).into(img)
-                        listener(data.teams[0].badge)
-                    }
-                }
-            }
-        }
     }
 
     fun setData(newItems: List<Match>) {
@@ -93,7 +77,7 @@ class MatchAdapter(private val listener: (match:Match, homeLogo:ImageView, awayL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.match_items_row, parent, false))
+        ViewHolder(MatchItemUI().createView(AnkoContext.create(parent.context, parent)))
 
     override fun getItemCount(): Int = items.size
 
