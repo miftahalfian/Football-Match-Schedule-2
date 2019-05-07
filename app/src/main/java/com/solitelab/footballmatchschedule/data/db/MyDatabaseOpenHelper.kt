@@ -32,7 +32,7 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "Favorit
         createNextMatchTable(db)
     }
 
-    fun createLastMatchTable(db: SQLiteDatabase) {
+    private fun createLastMatchTable(db: SQLiteDatabase) {
         db.createTable("LAST_MATCH", true,
             Favorite.ID to TEXT + PRIMARY_KEY,
             Favorite.LEAGUE to TEXT,
@@ -63,7 +63,7 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "Favorit
         )
     }
 
-    fun createNextMatchTable(db: SQLiteDatabase) {
+    private fun createNextMatchTable(db: SQLiteDatabase) {
         db.createTable("NEXT_MATCH", true,
             Favorite.ID to TEXT + PRIMARY_KEY,
             Favorite.LEAGUE to TEXT,

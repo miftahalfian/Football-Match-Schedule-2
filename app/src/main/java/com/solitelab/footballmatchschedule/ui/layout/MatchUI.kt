@@ -8,6 +8,7 @@ import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.TabLayout
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
 import android.view.Gravity
@@ -149,7 +150,7 @@ class MatchUI : AnkoComponent<MatchActivity> {
                 }
 
                 tabLayout = tabLayout {
-                    setTabTextColors(resources.getColor(R.color.colorPrimaryLight), resources.getColor(R.color.white))
+                    setTabTextColors(ContextCompat.getColor(context, R.color.colorPrimaryLight), ContextCompat.getColor(context, R.color.white))
                     setSelectedTabIndicatorColor(Color.WHITE)
                     background = ColorDrawable(colorAttr(R.attr.colorPrimary))
                     tabGravity = TabLayout.GRAVITY_FILL

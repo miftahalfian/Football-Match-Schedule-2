@@ -256,6 +256,10 @@ class MatchDetailActivity : AppCompatActivity(), MatchDetailView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
+            android.R.id.home -> {
+                finishAfterTransition()
+                true
+            }
             R.id.favorite -> {
                 switchFavorite()
                 true

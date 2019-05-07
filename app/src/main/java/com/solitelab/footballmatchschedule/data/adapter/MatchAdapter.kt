@@ -1,28 +1,18 @@
 package com.solitelab.footballmatchschedule.data.adapter
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.gson.Gson
 import com.solitelab.footballmatchschedule.R
-import com.solitelab.footballmatchschedule.data.api.ApiRepository
-import com.solitelab.footballmatchschedule.data.api.TheSportDBApi
 import com.solitelab.footballmatchschedule.data.mvp.model.Match
-import com.solitelab.footballmatchschedule.data.mvp.model.TeamResult
-import com.solitelab.footballmatchschedule.ui.layout.LeagueItemUI
 import com.solitelab.footballmatchschedule.ui.layout.MatchItemUI
 import com.solitelab.footballmatchschedule.utils.formatTo
 import com.solitelab.footballmatchschedule.utils.loadTeamBadge
 import com.solitelab.footballmatchschedule.utils.toDate
-import com.squareup.picasso.Picasso
 import org.jetbrains.anko.AnkoContext
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
-import org.jetbrains.anko.uiThread
 
 class MatchAdapter(private val listener: (match:Match, homeLogo:ImageView, awayLogo:ImageView, homeSrc:String, awaySrc:String) -> Unit)
     : RecyclerView.Adapter<MatchAdapter.ViewHolder>() {

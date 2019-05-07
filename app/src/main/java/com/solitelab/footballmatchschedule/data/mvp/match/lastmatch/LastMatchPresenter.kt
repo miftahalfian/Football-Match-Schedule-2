@@ -18,7 +18,7 @@ class LastMatchPresenter(val view : LastMatchView, val gson: Gson, private val a
 
             uiThread {
                 if (data.events != null) {
-                    view.onDataLoaded(data.events!!)
+                    view.onDataLoaded(data.events)
                 }
                 else view.onLoadFailed()
             }
