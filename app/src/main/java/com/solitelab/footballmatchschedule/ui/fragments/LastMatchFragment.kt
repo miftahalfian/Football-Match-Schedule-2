@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,23 +12,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.google.gson.Gson
-import com.solitelab.footballmatchschedule.ui.MatchDetailActivity
-import com.solitelab.footballmatchschedule.R
 import com.solitelab.footballmatchschedule.data.adapter.MatchAdapter
 import com.solitelab.footballmatchschedule.data.api.ApiRepository
 import com.solitelab.footballmatchschedule.data.mvp.match.lastmatch.LastMatchPresenter
 import com.solitelab.footballmatchschedule.data.mvp.match.lastmatch.LastMatchView
 import com.solitelab.footballmatchschedule.data.mvp.model.League
 import com.solitelab.footballmatchschedule.data.mvp.model.Match
+import com.solitelab.footballmatchschedule.ui.MatchDetailActivity
 import com.solitelab.footballmatchschedule.ui.layout.MatchList
-import com.solitelab.footballmatchschedule.ui.layout.MatchListUI
 import com.solitelab.footballmatchschedule.ui.layout.NoResult
 import com.solitelab.footballmatchschedule.utils.gone
 import com.solitelab.footballmatchschedule.utils.invisible
 import com.solitelab.footballmatchschedule.utils.visible
 import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.ankoView
-import org.jetbrains.anko.support.v4.*
+import org.jetbrains.anko.support.v4.UI
+import org.jetbrains.anko.support.v4.defaultSharedPreferences
+import org.jetbrains.anko.support.v4.intentFor
+import org.jetbrains.anko.support.v4.onRefresh
 
 class LastMatchFragment : Fragment(), LastMatchView {
     private lateinit var presenter : LastMatchPresenter

@@ -80,7 +80,6 @@ class SearchActivity : AppCompatActivity(), com.solitelab.footballmatchschedule.
         searchItem.expandActionView()
         searchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.search)
-        searchView.setIconifiedByDefault(false)
 
         searchView.onQueryTextListener {
             onQueryTextSubmit {
@@ -89,6 +88,18 @@ class SearchActivity : AppCompatActivity(), com.solitelab.footballmatchschedule.
                 true
             }
         }
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                // TODO: do something...
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                finish()
+                return true
+            }
+        })
 
         return super.onCreateOptionsMenu(menu)
     }

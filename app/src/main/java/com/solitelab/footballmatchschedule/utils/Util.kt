@@ -8,6 +8,9 @@ import com.solitelab.footballmatchschedule.data.api.ApiRepository
 import com.solitelab.footballmatchschedule.data.api.TheSportDBApi
 import com.solitelab.footballmatchschedule.data.mvp.model.TeamResult
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.text.SimpleDateFormat
@@ -37,21 +40,16 @@ fun Date.formatTo(dateFormat: String, timeZone: TimeZone = TimeZone.getDefault()
     return formatter.format(this)
 }
 
-
-
-fun loadTeamBadge(id : String?, img : ImageView, listener: (String?) -> Unit) {
-    img.doAsync {
+fun loadTeamBadge(id : String?, listener: (String?) -> Unit) {
+    GlobalScope.launch(Dispatchers.Main) {
         val data = Gson().fromJson(
-            ApiRepository().doRequest(TheSportDBApi.getTeamDetail(id)),
+            ApiRepository()
+                .doRequest(TheSportDBApi.getTeamDetail(id)).await(),
             TeamResult::class.java
         )
 
-        uiThread {
-            if (!data.teams[0].badge.isNullOrEmpty()) {
-                Log.d("match adapter", data.teams[0].badge)
-                Picasso.get().load(data.teams[0].badge).into(img)
-                listener(data.teams[0].badge)
-            }
+        if (!data.teams[0].badge.isNullOrEmpty()) {
+            listener(data.teams[0].badge)
         }
     }
 }

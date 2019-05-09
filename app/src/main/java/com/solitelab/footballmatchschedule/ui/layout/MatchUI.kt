@@ -66,13 +66,13 @@ class MatchUI : AnkoComponent<MatchActivity> {
                             marginStart = dimen(R.dimen.activity_horizontal_margin)
                             topMargin = dimen(R.dimen.activity_small_margin)
                             bottomMargin = dimen(R.dimen.activity_small_margin)
-                            topToTop = R.id.league_name
+                            topToTop = R.id.league_name_top
                             bottomToBottom = R.id.league_website
                             startToStart = PARENT_ID
                         }
 
                         leagueName = textView {
-                            id = R.id.league_name
+                            id = R.id.league_name_top
                             text = context.getString(R.string.league_name)
                             textColor = Color.WHITE
                             textSize = 20.0f
@@ -92,7 +92,7 @@ class MatchUI : AnkoComponent<MatchActivity> {
                             topMargin = dimen(R.dimen.activity_small_margin)
                             marginStart = dimen(R.dimen.activity_horizontal_margin)
                             marginEnd = dimen(R.dimen.activity_horizontal_margin)
-                            topToBottom = R.id.league_name
+                            topToBottom = R.id.league_name_top
                             startToEnd = R.id.league_logo
                         }
 

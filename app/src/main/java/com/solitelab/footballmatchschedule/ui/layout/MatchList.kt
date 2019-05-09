@@ -26,6 +26,7 @@ class MatchList : AnkoComponent<Context> {
                 android.R.color.holo_red_light)
 
             recyclerView = recyclerView {
+                id = R.id.match_list
                 lparams (width = matchParent, height = wrapContent)
                 layoutManager = LinearLayoutManager(context)
             }

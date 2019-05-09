@@ -5,32 +5,30 @@ import com.google.gson.Gson
 import com.solitelab.footballmatchschedule.data.api.ApiRepository
 import com.solitelab.footballmatchschedule.data.api.TheSportDBApi
 import com.solitelab.footballmatchschedule.data.db.database
-import com.solitelab.footballmatchschedule.data.mvp.model.Favorite
 import com.solitelab.footballmatchschedule.data.mvp.model.Match
 import com.solitelab.footballmatchschedule.data.mvp.model.TeamResult
 import com.solitelab.footballmatchschedule.ui.MatchDetailActivity
 import com.solitelab.footballmatchschedule.utils.toDate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.design.snackbar
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import java.util.*
 
 class MatchDetailPresenter(val view : MatchDetailView) {
 
     fun loadTeamBadge(id : String?, tag : String) {
-        doAsync {
-            val data = Gson().fromJson(
-                ApiRepository().doRequest(TheSportDBApi.getTeamDetail(id)),
+        GlobalScope.launch(Dispatchers.Main){
+            val data = Gson().fromJson(ApiRepository()
+                .doRequest(TheSportDBApi.getTeamDetail(id)).await(),
                 TeamResult::class.java
             )
 
-            uiThread {
-                view.onBadgeLoaded(data.teams[0].badge, tag)
-            }
+            view.onBadgeLoaded(data.teams[0].badge, tag)
         }
     }
 
@@ -38,42 +36,42 @@ class MatchDetailPresenter(val view : MatchDetailView) {
         val date = match?.date!!.toDate("yyyy-MM-dd")
         val currentDate = getCurrentDateTime()
 
-        val tableName = if (date.compareTo(currentDate) > 0) "NEXT_MATCH" else "LAST_MATCH"
+        val tableName = if (date > currentDate) "NEXT_MATCH" else "LAST_MATCH"
         val context = view as MatchDetailActivity
 
         try {
             context.database.use {
                 insert(tableName,
-                    Favorite.ID to match.id,
-                    Favorite.LEAGUE to match.league,
-                    Favorite.DATE_EVENT to match.date,
-                    Favorite.TIME to match.time,
-                    Favorite.HOME_TEAM_ID to match.homeTeamID,
-                    Favorite.HOME_TEAM_NAME to match.homeTeamName,
-                    Favorite.HOME_SCORE to match.homeScore,
-                    Favorite.HOME_GOAL_DETAILS to match.homeGoalDetail,
-                    Favorite.HOME_GOAL_KEEPER to match.homeGoalKeeper,
-                    Favorite.HOME_DEFENSE to match.homeDefence,
-                    Favorite.HOME_MIDFIELD to match.homeMidfield,
-                    Favorite.HOME_FORWARD to match.homeForward,
-                    Favorite.HOME_SUBSTITUTES to match.homeSubstitutes,
-                    Favorite.HOME_RED_CARDS to match.homeRedCards,
-                    Favorite.HOME_YELLOW_CARDS to match.homeYellowCards,
-                    Favorite.AWAY_TEAM_ID to match.awayTeamID,
-                    Favorite.AWAY_TEAM_NAME to match.awayTeamName,
-                    Favorite.AWAY_SCORE to match.awayScore,
-                    Favorite.AWAY_GOAL_DETAILS to match.awayGoalDetail,
-                    Favorite.AWAY_GOAL_KEEPER to match.awayGoalKeeper,
-                    Favorite.AWAY_DEFENSE to match.awayDefence,
-                    Favorite.AWAY_MIDFIELD to match.awayMidfield,
-                    Favorite.AWAY_FORWARD to match.awayForward,
-                    Favorite.AWAY_SUBSTITUTES to match.awaySubstitutes,
-                    Favorite.AWAY_RED_CARDS to match.awayRedCards,
-                    Favorite.AWAY_YELLOW_CARDS to match.awayYellowCards
+                    Match.ID to match.id,
+                    Match.LEAGUE to match.league,
+                    Match.DATE_EVENT to match.date,
+                    Match.TIME to match.time,
+                    Match.HOME_TEAM_ID to match.homeTeamID,
+                    Match.HOME_TEAM_NAME to match.homeTeamName,
+                    Match.HOME_SCORE to match.homeScore,
+                    Match.HOME_GOAL_DETAILS to match.homeGoalDetail,
+                    Match.HOME_GOAL_KEEPER to match.homeGoalKeeper,
+                    Match.HOME_DEFENSE to match.homeDefence,
+                    Match.HOME_MIDFIELD to match.homeMidfield,
+                    Match.HOME_FORWARD to match.homeForward,
+                    Match.HOME_SUBSTITUTES to match.homeSubstitutes,
+                    Match.HOME_RED_CARDS to match.homeRedCards,
+                    Match.HOME_YELLOW_CARDS to match.homeYellowCards,
+                    Match.AWAY_TEAM_ID to match.awayTeamID,
+                    Match.AWAY_TEAM_NAME to match.awayTeamName,
+                    Match.AWAY_SCORE to match.awayScore,
+                    Match.AWAY_GOAL_DETAILS to match.awayGoalDetail,
+                    Match.AWAY_GOAL_KEEPER to match.awayGoalKeeper,
+                    Match.AWAY_DEFENSE to match.awayDefence,
+                    Match.AWAY_MIDFIELD to match.awayMidfield,
+                    Match.AWAY_FORWARD to match.awayForward,
+                    Match.AWAY_SUBSTITUTES to match.awaySubstitutes,
+                    Match.AWAY_RED_CARDS to match.awayRedCards,
+                    Match.AWAY_YELLOW_CARDS to match.awayYellowCards
                 )
             }
             context.getRootView().snackbar("Added to favorite").show()
-        } catch (e: SQLiteConstraintException){
+        } catch (e: Throwable){
             context.getRootView().snackbar(e.localizedMessage).show()
         }
     }
@@ -82,7 +80,7 @@ class MatchDetailPresenter(val view : MatchDetailView) {
         val date = match?.date!!.toDate("yyyy-MM-dd")
         val currentDate = getCurrentDateTime()
 
-        val tableName = if (date.compareTo(currentDate) > 0) "NEXT_MATCH" else "LAST_MATCH"
+        val tableName = if (date > currentDate) "NEXT_MATCH" else "LAST_MATCH"
         val context = view as MatchDetailActivity
 
         try {
@@ -100,20 +98,20 @@ class MatchDetailPresenter(val view : MatchDetailView) {
         val date = match?.date!!.toDate("yyyy-MM-dd")
         val currentDate = getCurrentDateTime()
 
-        val tableName = if (date.compareTo(currentDate) > 0) "NEXT_MATCH" else "LAST_MATCH"
+        val tableName = if (date > currentDate) "NEXT_MATCH" else "LAST_MATCH"
         val context = view as MatchDetailActivity
 
-        var isFavorite = false
+        var isMatch = false
 
         context.database.use {
             val result = select(tableName)
                 .whereArgs("(ID = {id})",
                     "id" to match.id!!)
-            val favorite = result.parseList(classParser<Favorite>())
-            if (!favorite.isEmpty()) isFavorite = true
+            val favorite = result.parseList(classParser<Match>())
+            isMatch = favorite.isNotEmpty()
         }
 
-        return isFavorite
+        return isMatch
     }
 
     private fun getCurrentDateTime(): Date {

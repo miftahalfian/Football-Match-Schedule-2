@@ -4,6 +4,6 @@ import com.solitelab.footballmatchschedule.data.mvp.model.Match
 
 interface LastMatchView {
     fun onLoadData()
-    fun onDataLoaded(matches : List<Match>?)
+    fun onDataLoaded(matches : List<Match>)
     fun onLoadFailed()
 }

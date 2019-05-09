@@ -9,6 +9,7 @@ import org.jetbrains.anko.*
 class NoResult : AnkoComponent<Context> {
     override fun createView(ui: AnkoContext<Context>) = with(ui) {
         verticalLayout {
+            id = R.id.no_result
             lparams(matchParent, matchParent) {
                 gravity = Gravity.CENTER
             }
